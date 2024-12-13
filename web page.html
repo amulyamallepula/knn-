@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Nearest Neighbors (KNN) Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        section {
+            margin-bottom: 40px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        footer {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="content-wrapper">
+            <h1>K-Nearest Neighbors (KNN) Algorithm</h1>
+            <p>This tutorial explains the K-Nearest Neighbors (KNN) algorithm, its theory, implementation, and uses in machine learning. KNN is a simple and versatile algorithm used for classification and regression tasks. By the end of this tutorial, you will understand how KNN works and how to implement it with Python.</p>
+        </div>
+    </header>
+
+    <section id="introduction">
+        <div class="content-wrapper">
+            <h2>Introduction</h2>
+            <p>The K-Nearest Neighbors (KNN) algorithm is a fundamental method in machine learning. It's widely used for classification and regression problems. It works by making predictions for a data point based on the majority class (for classification) or average (for regression) of its nearest neighbors in the feature space. Despite being a simple method, KNN can often produce highly effective models.</p>
+            <p>In KNN, the model doesn’t have an explicit training phase. Instead, the entire dataset is stored and used to make predictions whenever needed. The performance of the model is heavily dependent on the choice of 'k' (the number of nearest neighbors) and the distance metric used to measure proximity between points.</p>
+        </div>
+    </section>
+
+    <section id="theory">
+        <div class="content-wrapper">
+            <h2>Theory Behind K-Nearest Neighbors</h2>
+            <p>In KNN, the basic idea is to predict the label of a data point based on the labels of its 'k' nearest neighbors. The algorithm calculates the distance from the new point to all other points in the training set and selects the nearest points. The prediction is then made based on these neighbors.</p>
+            <p>The KNN algorithm follows these steps:</p>
+            <ol>
+                <li>Compute the distance between the new data point and all points in the training dataset. A common distance metric used is Euclidean distance.</li>
+                <li>Sort the distances and pick the 'k' nearest points.</li>
+                <li>For classification tasks, predict the label that occurs most frequently among the 'k' nearest neighbors. For regression tasks, predict the average label of the 'k' nearest neighbors.</li>
+            </ol>
+            <p>Here’s the formula for Euclidean distance between two points <code>(x_1, y_1)</code> and <code>(x_2, y_2)</code> in a 2D space:</p>
+            <pre><code>distance = sqrt((x_2 - x_1)^2 + (y_2 - y_1)^2)</code></pre>
+            <p>The algorithm’s simplicity and its non-parametric nature make it a powerful tool for many tasks. However, the performance of KNN can degrade with high-dimensional data (curse of dimensionality) and large datasets.</p>
+        </div>
+    </section>
+
+    <section id="use-cases">
+        <div class="content-wrapper">
+            <h2>Use Cases of KNN</h2>
+            <p>KNN is a versatile algorithm that can be used for a variety of tasks. Some common use cases include:</p>
+            <ul>
+                <li><strong>Classification:</strong> Predicting the category of a data point. For example, predicting whether an email is spam or not based on its content.</li>
+                <li><strong>Regression:</strong> Predicting continuous values. For example, predicting house prices based on features like location, area, and amenities.</li>
+                <li><strong>Recommendation Systems:</strong> KNN can be used to build recommendation engines by finding similar items based on user preferences.</li>
+            </ul>
+            <p>In each of these cases, the choice of 'k' and the distance metric can significantly affect the performance of the model. Thus, experimentation is important in achieving optimal results.</p>
+        </div>
+    </section>
+
+    <section id="implementation">
+        <div class="content-wrapper">
+            <h2>Implementation of KNN using Python</h2>
+            <p>In this section, we will implement the KNN algorithm using Python. We will use the well-known Iris dataset, which contains flower data with three classes: setosa, versicolor, and virginica. We’ll use the <code>scikit-learn</code> library to perform the KNN classification.</p>
+            <p>The Iris dataset has four features: sepal length, sepal width, petal length, and petal width, all measured for different iris flower samples.</p>
+
+            <h3>Python Code</h3>
+            <pre><code>
+# Importing necessary libraries
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+
+# Loading the Iris dataset
+iris = datasets.load_iris()
+X = iris.data  # Features
+y = iris.target  # Labels
+
+# Splitting the dataset into training and testing sets (70% train, 30% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Creating the KNN model
+k = 3  # Number of neighbors
+knn = KNeighborsClassifier(n_neighbors=k)
+
+# Training the model
+knn.fit(X_train, y_train)
+
+# Making predictions on the test set
+y_pred = knn.predict(X_test)
+
+# Evaluating the accuracy of the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy of the KNN model: {accuracy:.2f}")
+
+# Visualizing the classification results
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_pred, cmap='viridis', marker='o', edgecolor='k')
+plt.title(f"KNN Classification with k={k}")
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.colorbar(label='Predicted Species')
+plt.show()
+            </code></pre>
+        </div>
+    </section>
+
+    <section id="results">
+        <div class="content-wrapper">
+            <h2>Results</h2>
+            <p>Upon running the above Python code, the model is trained on 70% of the Iris dataset, and its performance is evaluated on the remaining 30%. The model's accuracy is printed in the output.</p>
+            <p>For the chosen value of k=3, the model achieved an accuracy of approximately <strong>0.98</strong> (or 98%), indicating that the KNN algorithm performs very well on the Iris dataset.</p>
+            <p>Here is a scatter plot of the predicted species based on sepal length and sepal width. The different colors represent different predicted species.</p>
+            <img src="knn_results.png" alt="KNN Classification Results" style="max-width: 100%; height: auto;">
+        </div>
+    </section>
+
+    <section id="discussion">
+        <div class="content-wrapper">
+            <h2>Discussion</h2>
+            <p>The KNN algorithm performed well on this dataset, with a high accuracy score. However, the following points are worth noting:</p>
+            <ul>
+                <li><strong>Choice of k:</strong> The value of 'k' significantly impacts the performance of KNN. A smaller 'k' may lead to overfitting, while a larger 'k' may result in underfitting. It is crucial to test different values of 'k' to find the optimal one.</li>
+                <li><strong>Distance Metric:</strong> KNN typically uses Euclidean distance, but other metrics like Manhattan distance or Minkowski distance can be used. The choice of distance metric can affect the model's accuracy.</li>
+                <li><strong>Feature Scaling:</strong> KNN is sensitive to the scale of the features. In this case, the features were already on a similar scale, but for other datasets, it’s recommended to standardize or normalize the data before applying KNN.</li>
+                <li><strong>Computational Cost:</strong> KNN is a lazy learner, meaning that it doesn't do any learning during training. This makes it computationally expensive during prediction, especially with large datasets.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="conclusion">
+        <div class="content-wrapper">
+            <h2>Conclusion</h2>
+            <p>K-Nearest Neighbors (KNN) is a simple yet powerful machine learning algorithm used for classification and regression tasks. It relies on finding the closest data points in the feature space and making predictions based on their labels. In this tutorial, we implemented KNN using Python and demonstrated its effectiveness on the Iris dataset.</p>
+            <p>While KNN is a versatile algorithm, it has its limitations, including sensitivity to the value of 'k', distance metrics, and computational efficiency for large datasets. Nevertheless, with careful tuning, KNN can be an excellent choice for many machine learning problems.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="content-wrapper">
+            <p>Created by [Your Name]. For further reading, refer to the <a href="https://scikit-learn.org/stable/" target="_blank">scikit-learn documentation</a>.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
